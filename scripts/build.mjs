@@ -1,0 +1,13 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { projectRoot } from './server.mjs';
+const dist = path.join(projectRoot, 'dist');
+await fs.mkdir(dist, { recursive: true });
+await fs.cp(path.join(projectRoot, 'public'), dist, { recursive: true });
+const vendor = path.join(dist, 'vendor/bootstrap');
+await fs.mkdir(path.join(vendor, 'dist/css'), { recursive: true });
+await fs.cp(path.join(projectRoot, 'node_modules/bootstrap/js'), path.join(vendor, 'js'), { recursive: true });
+await fs.copyFile(path.join(projectRoot, 'node_modules/bootstrap/dist/css/bootstrap.min.css'), path.join(vendor, 'dist/css/bootstrap.min.css'));
+await fs.copyFile(path.join(projectRoot, 'node_modules/bootstrap/dist/css/bootstrap.min.css.map'), path.join(vendor, 'dist/css/bootstrap.min.css.map'));
+await fs.copyFile(path.join(projectRoot, 'node_modules/bootstrap/LICENSE'), path.join(vendor, 'LICENSE'));
+console.log('Сборка dist готова. npm run preview — открыть её локально.');

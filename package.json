@@ -1,0 +1,23 @@
+{
+  "name": "bootstrap-modal-study",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Исследование архитектуры и жизненного цикла Bootstrap Modal 5.3.8",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/server.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/server.mjs --dist",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs"
+  },
+  "dependencies": {
+    "bootstrap": "5.3.8"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

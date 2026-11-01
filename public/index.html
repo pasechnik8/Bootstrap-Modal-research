@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap Modal — лаборатория жизненного цикла</title>
+  <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="lab-shell">
+    <header class="lab-header">
+      <div class="eyebrow">BOOTSTRAP 5.3.8 · ИССЛЕДОВАНИЕ АРХИТЕКТУРЫ</div>
+      <h1>Что происходит<br><span>за модальным окном</span></h1>
+      <p>Открытие, события, анимация и фокус. Меняйте одно условие и проверяйте своё предположение по журналу настоящего компонента Bootstrap.</p>
+    </header>
+    <div class="lifecycle" aria-label="Этапы жизни окна">
+      <span>Скрыто</span><b>→</b><span>show</span><b>→</b><span>shown</span><b>→</b><span>hide</span><b>→</b><span>hidden</span>
+    </div>
+    <div class="lab-grid">
+      <section class="panel settings-panel">
+        <h2>Условия эксперимента</h2>
+        <p class="hint">Изменения автоматически создают новый экземпляр, пока окно полностью закрыто.</p>
+        <fieldset id="settings">
+          <label class="option"><input id="keyboard" type="checkbox" checked><span>Закрытие по Escape<small>keyboard: true</small></span></label>
+          <label class="option"><input id="focus" type="checkbox" checked><span>Удерживать фокус<small>focus: true · проверка клавишей Tab</small></span></label>
+          <label class="option"><input id="animation" type="checkbox" checked><span>Анимация перехода<small>Класс .fade; длительность задаёт CSS</small></span></label>
+          <label class="select-option" for="backdrop">Поведение фона</label>
+          <select id="backdrop" class="form-select"><option value="true">Обычный — нажатие закрывает</option><option value="static">Статический — закрытие запрещено</option><option value="false">Без затемняющего фона</option></select>
+          <label class="option"><input id="preventShow" type="checkbox"><span>Отменять открытие<small>preventDefault() в show.bs.modal</small></span></label>
+          <label class="option"><input id="preventHide" type="checkbox"><span>Отменять закрытие<small>preventDefault() в hide.bs.modal</small></span></label>
+        </fieldset>
+        <div class="actions">
+          <button id="openJs" class="btn btn-primary">Открыть через JS</button>
+          <button id="openData" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#studyModal">Через data-bs-toggle</button>
+          <button id="race" class="btn btn-outline-secondary">show(); сразу hide();</button>
+          <button id="sameInstance" class="btn btn-outline-secondary">Проверить getOrCreateInstance</button>
+          <button id="dispose" class="btn btn-outline-secondary">dispose() закрытого окна</button>
+          <button id="reset" class="btn btn-light">Сбросить</button>
+        </div>
+        <p id="notice" class="notice" role="status">Готово к эксперименту.</p>
+      </section>
+      <section class="panel journal-panel">
+        <div class="section-top"><h2>Путь выполнения</h2><button id="clearLog" class="btn btn-sm btn-light">Очистить журнал</button></div>
+        <div class="state-banner"><span id="phase">Скрыто</span><code id="flags"></code></div>
+        <ol id="journal" aria-label="Журнал событий"></ol>
+        <details><summary>Снимок внутреннего состояния</summary><pre id="state"></pre><p class="hint">Поля с подчёркиванием читаются только для исследования, это не стабильный публичный API.</p></details>
+      </section>
+    </div>
+    <section class="reading"><h2>Как провести первый опыт</h2><p>Откройте окно через JS, затем закройте его. Найдите <code>caller:after show()</code>: при анимации эта запись появляется до <code>shown.bs.modal</code>. Выключите анимацию и повторите.</p><p>Исходники доступны прямо в DevTools: <code>vendor/bootstrap/js/src/modal.js</code>. Для защиты начните с методов <code>show()</code> и <code>hide()</code>.</p></section>
+    <footer>Обычные HTML и JavaScript · реальный Bootstrap Modal · все ресурсы локальные</footer>
+  </main>
+
+  <div class="modal fade" id="studyModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"><div><div class="eyebrow">ОБЪЕКТ ИССЛЕДОВАНИЯ</div><h2 class="modal-title fs-4" id="modalTitle">Настоящий Bootstrap Modal</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть окно"></button></div>
+        <div class="modal-body">
+          <p>Проверьте Escape, нажатие за пределами окна и переход фокуса клавишами Tab / Shift+Tab.</p>
+          <label class="form-label" for="demoInput">Поле для проверки фокуса</label><input id="demoInput" class="form-control" placeholder="Введите любой текст">
+          <label class="option"><input id="guardInside" type="checkbox"><span>Отменять закрытие<small>Можно выключить здесь, чтобы закрыть окно</small></span></label>
+          <div id="modalHint" class="modal-hint" role="status"></div>
+          <div class="mini-title">Последние события</div><ol id="miniJournal"></ol>
+        </div>
+        <div class="modal-footer"><button id="closeJs" class="btn btn-outline-primary">Закрыть через JS</button><button class="btn btn-primary" data-bs-dismiss="modal">Закрыть через data-bs-dismiss</button></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
